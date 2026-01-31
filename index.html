@@ -7,104 +7,201 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2c3e50">
     <style>
-        :root { --primary: #2c3e50; --accent: #e67e22; --success: #27ae60; --bg: #f5f6fa; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); direction: rtl; margin: 0; padding-bottom: 30px; }
-        .header { background: var(--primary); color: white; text-align: center; padding: 20px 15px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        :root { --primary: #2c3e50; --success: #27ae60; --bg: #f5f6fa; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; direction: rtl; }
+        body { background: var(--bg); margin: 0; padding-bottom: 30px; }
+        .header { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .container { padding: 15px; max-width: 500px; margin: auto; }
-        .tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .tab-btn { background: white; border: 1.5px solid var(--primary); padding: 12px; border-radius: 12px; cursor: pointer; font-weight: bold; color: var(--primary); }
+        .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 20px; }
+        .tab-btn { background: white; border: 1.5px solid var(--primary); padding: 10px 2px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.3s; }
         .tab-btn.active { background: var(--primary); color: white; }
-        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: none; }
+        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: none; border: 1px solid #eee; }
         .card.active { display: block; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-weight: bold; color: #444; }
-        input, select { width: 100%; padding: 14px; border: 1.5px solid #eee; border-radius: 12px; text-align: center; font-size: 16px; }
-        .btn-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; }
-        .calc-btn { background: var(--success); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .clear-btn { background: #95a5a6; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; }
-        .result-box { margin-top: 25px; padding: 18px; border-radius: 15px; background: #f0fff4; border-right: 6px solid var(--success); display: none; }
-        .res-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #c2d6c8; }
-        .share-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; margin-top: 15px; font-weight: bold; display: none; }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #555; }
+        input, select { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 10px; text-align: center; font-size: 15px; outline: none; }
+        input:focus { border-color: var(--primary); }
+        .result-box { margin-top: 15px; padding: 15px; border-radius: 15px; background: #f0fff4; border-right: 6px solid var(--success); display: none; }
+        .res-line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #c2d6c8; }
+        .share-btn { background: #25d366; color: white; border: none; padding: 14px; border-radius: 12px; width: 100%; margin-top: 15px; font-weight: bold; cursor: pointer; display: none; }
+        .clear-btn { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; font-weight: bold; margin-bottom: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2 style="margin:0;">تعمیراتی ماسٹر کیلکولیٹر</h2>
-        <p style="margin:5px 0 0; font-size: 12px; opacity: 0.8;">پلے اسٹور ریڈی - آف لائن ورژن</p>
+
+<div class="header">
+    <h2 style="margin:0;">تعمیراتی ماسٹر کیلکولیٹر</h2>
+    <p style="margin:5px 0 0; font-size: 12px; opacity: 0.8;">پلے اسٹور ریڈی - آف لائن ورژن</p>
+</div>
+
+<div class="container">
+    <button class="clear-btn" onclick="resetApp()">♻️ تمام خانے صاف کریں</button>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'concrete')">🏗️ لنٹر</button>
+        <button class="tab-btn" onclick="openTab(event, 'bricks')">🧱 اینٹیں</button>
+        <button class="tab-btn" onclick="openTab(event, 'tiles')">✨ ماربل</button>
+        <button class="tab-btn" onclick="openTab(event, 'plot')">📏 پلاٹ</button>
     </div>
-    <div class="container">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab(event, 'bricks')">🧱 اینٹیں</button>
-            <button class="tab-btn" onclick="openTab(event, 'concrete')">🏗️ لنٹر</button>
+
+    <div id="concrete" class="card active">
+        <div class="input-row">
+            <div><label>کل رقبہ (فٹ)</label><input type="number" id="c_area" placeholder="0" oninput="autoCalc()"></div>
+            <div><label>موٹائی (انچ)</label><input type="number" id="c_thick" value="5" oninput="autoCalc()"></div>
         </div>
-        <div id="bricks" class="card active">
-            <div class="input-group"><label>لمبائی (فٹ)</label><input type="number" inputmode="decimal" id="b_l"></div>
-            <div class="input-group"><label>اونچائی (فٹ)</label><input type="number" inputmode="decimal" id="b_h" value="10"></div>
-            <div class="input-group"><label>موٹائی</label><select id="b_t"><option value="9">9 انچ</option><option value="4.5">4.5 انچ</option></select></div>
-            <div class="btn-row">
-                <button class="calc-btn" onclick="calcBricks()">حساب لگائیں</button>
-                <button class="clear-btn" onclick="clearInputs('bricks', 'res_bricks', 'share_bricks')">صاف</button>
-            </div>
-            <div id="res_bricks" class="result-box"></div>
-            <button id="share_bricks" class="share-btn" onclick="shareWhatsApp('res_bricks')">WhatsApp پر بھیجیں</button>
+        <div class="input-row">
+            <div><label>سیمنٹ ریٹ</label><input type="number" id="r_cement" value="1250" oninput="autoCalc()"></div>
+            <div><label>سریا ریٹ</label><input type="number" id="r_steel" value="270" oninput="autoCalc()"></div>
         </div>
-        <div id="concrete" class="card">
-            <div class="input-group"><label>رقبہ (فٹ)</label><input type="number" inputmode="decimal" id="c_area"></div>
-            <div class="input-group"><label>موٹائی (انچ)</label><input type="number" id="c_thick" value="5"></div>
-            <div class="btn-row">
-                <button class="calc-btn" onclick="calcConcrete()">حساب لگائیں</button>
-                <button class="clear-btn" onclick="clearInputs('concrete', 'res_concrete', 'share_concrete')">صاف</button>
-            </div>
-            <div id="res_concrete" class="result-box"></div>
-            <button id="share_concrete" class="share-btn" onclick="shareWhatsApp('res_concrete')">WhatsApp پر بھیجیں</button>
+        <div class="input-row">
+            <div><label>ریت ریٹ (cft)</label><input type="number" id="r_sand" value="45" oninput="autoCalc()"></div>
+            <div><label>بجری ریٹ (cft)</label><input type="number" id="r_crush" value="110" oninput="autoCalc()"></div>
         </div>
+        <div>
+            <label>سریے کا سائز (ستر)</label>
+            <select id="s_gauge" onchange="autoCalc()">
+                <option value="0.40">3 ستر</option>
+                <option value="0.55" selected>4 ستر</option>
+            </select>
+        </div>
+        <div id="res_concrete" class="result-box"></div>
+        <button class="share-btn" id="btn_con" onclick="shareWa('res_concrete')">WhatsApp رپورٹ</button>
     </div>
+
+    <div id="bricks" class="card">
+        <div class="input-row">
+            <div><label>دیوار کی لمبائی (فٹ)</label><input type="number" id="b_l" placeholder="0" oninput="autoCalc()"></div>
+            <div><label>دیوار کی اونچائی (فٹ)</label><input type="number" id="b_h" value="10" oninput="autoCalc()"></div>
+        </div>
+        <div class="input-row">
+            <div><label>دیوار کی موٹائی</label>
+                <select id="b_t" onchange="autoCalc()">
+                    <option value="9">9 انچ</option>
+                    <option value="4.5">4.5 انچ</option>
+                </select>
+            </div>
+            <div><label>اینٹوں کا ریٹ</label><input type="number" id="r_brick" value="14500" oninput="autoCalc()"></div>
+        </div>
+        <div id="res_bricks" class="result-box"></div>
+        <button class="share-btn" id="btn_bri" onclick="shareWa('res_bricks')">WhatsApp رپورٹ</button>
+    </div>
+
+    <div id="tiles" class="card">
+        <div class="input-row">
+            <div><label>فرش کی لمبائی (فٹ)</label><input type="number" id="t_l" placeholder="0" oninput="autoCalc()"></div>
+            <div><label>فرش کی چوڑائی (فٹ)</label><input type="number" id="t_w" placeholder="0" oninput="autoCalc()"></div>
+        </div>
+        <div class="input-row">
+            <div><label>ماربل سائز</label>
+                <select id="t_size" onchange="autoCalc()">
+                    <option value="4">2 x 2 ft</option>
+                    <option value="8">2 x 4 ft</option>
+                    <option value="0.25">9 x 4 in</option>
+                    <option value="1">1 x 1 ft</option>
+                    <option value="2">1 x 2 ft</option>
+                    <option value="3">1 x 3 ft</option>
+                    <option value="4">1 x 4 ft</option>
+                </select>
+            </div>
+            <div><label>ریٹ (فی فٹ)</label><input type="number" id="r_tile" value="180" oninput="autoCalc()"></div>
+        </div>
+        <div id="res_tiles" class="result-box"></div>
+        <button class="share-btn" id="btn_til" onclick="shareWa('res_tiles')">WhatsApp رپورٹ</button>
+    </div>
+
+    <div id="plot" class="card">
+        <div class="input-row">
+            <div><label>پلاٹ لمبائی (فٹ)</label><input type="number" id="p_l" placeholder="0" oninput="autoCalc()"></div>
+            <div><label>پلاٹ چوڑائی (فٹ)</label><input type="number" id="p_w" placeholder="0" oninput="autoCalc()"></div>
+        </div>
+        <div id="res_plot" class="result-box"></div>
+    </div>
+</div>
+
 <script>
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js');
-        });
+        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js'); });
     }
+
     function openTab(evt, tabName) {
         let cards = document.getElementsByClassName("card");
-        for (let i = 0; i < cards.length; i++) cards[i].style.display = "none";
+        for (let card of cards) card.style.display = "none";
         let btns = document.getElementsByClassName("tab-btn");
-        for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+        for (let btn of btns) btn.classList.remove("active");
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.classList.add("active");
+        autoCalc();
     }
-    function clearInputs(cardId, resId, shareId) {
-        let inputs = document.getElementById(cardId).getElementsByTagName('input');
-        for (let i = 0; i < inputs.length; i++) inputs[i].value = "";
-        document.getElementById(resId).style.display = "none";
-        document.getElementById(shareId).style.display = "none";
-    }
-    function calcBricks() {
-        let l = parseFloat(document.getElementById('b_l').value) || 0;
-        let h = parseFloat(document.getElementById('b_h').value) || 0;
-        let t = parseFloat(document.getElementById('b_t').value);
-        let b = Math.round((l * h) * (t == 9 ? 13.5 : 6.75) * 1.05);
-        let res = document.getElementById('res_bricks');
-        res.style.display = "block";
-        res.innerHTML = `<div class="res-line"><span>کل اینٹیں:</span> <span>${b.toLocaleString()}</span></div>`;
-        document.getElementById('share_bricks').style.display = "block";
-    }
-    function calcConcrete() {
-        let a = parseFloat(document.getElementById('c_area').value) || 0;
-        let th = parseFloat(document.getElementById('c_thick').value) || 0;
-        let dry = (a * (th/12)) * 1.54;
+
+    function autoCalc() {
+        // لنٹر
+        let ca = parseFloat(document.getElementById('c_area').value) || 0;
+        let cth = parseFloat(document.getElementById('c_thick').value) || 0;
+        let s_gauge = parseFloat(document.getElementById('s_gauge').value);
+        let dry = (ca * (cth/12)) * 1.54;
         let cem = Math.ceil((dry * (1/7)) / 1.25);
-        let steel = Math.round(a * 0.85);
-        let res = document.getElementById('res_concrete');
-        res.style.display = "block";
-        res.innerHTML = `<div class="res-line"><span>سیمنٹ:</span> <span>${cem} بوریاں</span></div><div class="res-line"><span>سریا:</span> <span>${steel} کلو</span></div>`;
-        document.getElementById('share_concrete').style.display = "block";
+        let sand = Math.round(dry * (2/7));
+        let crush = Math.round(dry * (4/7));
+        let steel = Math.round(ca * s_gauge);
+        let c_cost = (cem * document.getElementById('r_cement').value) + (steel * document.getElementById('r_steel').value) + (sand * document.getElementById('r_sand').value) + (crush * document.getElementById('r_crush').value);
+        
+        if(ca > 0) {
+            document.getElementById('res_concrete').style.display = "block";
+            document.getElementById('btn_con').style.display = "block";
+            document.getElementById('res_concrete').innerHTML = `
+                <div class="res-line"><span>سیمنٹ:</span><span>${cem} بوری</span></div>
+                <div class="res-line"><span>ریت:</span><span>${sand} cft</span></div>
+                <div class="res-line"><span>بجری:</span><span>${crush} cft</span></div>
+                <div class="res-line"><span>سریا (${document.getElementById('s_gauge').options[document.getElementById('s_gauge').selectedIndex].text}):</span><span>${steel} کلو</span></div>
+                <div class="res-line" style="font-weight:bold; color:var(--success)"><span>کل خرچہ:</span><span>Rs. ${Math.round(c_cost).toLocaleString()}</span></div>`;
+        }
+
+        // اینٹیں
+        let bl = parseFloat(document.getElementById('b_l').value) || 0;
+        let bh = parseFloat(document.getElementById('b_h').value) || 0;
+        let bt = parseFloat(document.getElementById('b_t').value);
+        let bqty = Math.round((bl * bh) * (bt == 9 ? 13.5 : 6.75) * 1.05);
+        let btotal = (bqty / 1000) * (parseFloat(document.getElementById('r_brick').value) || 0);
+        if(bl > 0) {
+            document.getElementById('res_bricks').style.display = "block";
+            document.getElementById('btn_bri').style.display = "block";
+            document.getElementById('res_bricks').innerHTML = `<div class="res-line"><span>کل اینٹیں:</span><span>${bqty.toLocaleString()}</span></div><div class="res-line" style="font-weight:bold; color:var(--success)"><span>کل خرچہ:</span><span>Rs. ${Math.round(btotal).toLocaleString()}</span></div>`;
+        }
+
+        // ماربل
+        let tl = parseFloat(document.getElementById('t_l').value) || 0;
+        let tw = parseFloat(document.getElementById('t_w').value) || 0;
+        let ts = parseFloat(document.getElementById('t_size').value);
+        let area = tl * tw;
+        let qty = Math.ceil(area / ts);
+        let cost = area * (parseFloat(document.getElementById('r_tile').value) || 0);
+        if(area > 0) {
+            document.getElementById('res_tiles').style.display = "block";
+            document.getElementById('btn_til').style.display = "block";
+            document.getElementById('res_tiles').innerHTML = `<div class="res-line"><span>کل رقبہ:</span><span>${area} ft</span></div><div class="res-line"><span>تعداد:</span><span>${qty} پیس</span></div><div class="res-line" style="font-weight:bold; color:var(--success)"><span>کل خرچہ:</span><span>Rs. ${Math.round(cost).toLocaleString()}</span></div>`;
+        }
+
+        // پلاٹ
+        let pl = parseFloat(document.getElementById('p_l').value) || 0;
+        let pw = parseFloat(document.getElementById('p_w').value) || 0;
+        if(pl > 0) {
+            document.getElementById('res_plot').style.display = "block";
+            document.getElementById('res_plot').innerHTML = `<div class="res-line"><span>کل رقبہ:</span><span>${pl * pw} فٹ</span></div>`;
+        }
     }
-    function shareWhatsApp(id) {
+
+    function resetApp() {
+        let inputs = document.getElementsByTagName('input');
+        for (let input of inputs) { if(!input.id.includes('r_')) input.value = ""; }
+        document.querySelectorAll('.result-box, .share-btn').forEach(el => el.style.display = 'none');
+        autoCalc();
+    }
+
+    function shareWa(id) {
         let text = document.getElementById(id).innerText;
-        window.open("https://wa.me/?text=" + encodeURIComponent("🏗️ رپورٹ:\n" + text));
+        window.open("https://wa.me/?text=" + encodeURIComponent("🏗️ تعمیراتی رپورٹ:\n" + text));
     }
+    window.onload = autoCalc;
 </script>
 </body>
 </html>
