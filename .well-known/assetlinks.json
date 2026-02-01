@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.rafiqmuhammab_lgtm.twa",
+        "sha256_cert_fingerprints": ["B7:C0:FA:10:0E:D2:6A:0F:FE:8B:8D:D7:C8:1D:FE:A2:63:C3:3D:25:AF:9D:95:17:3D:1F:BA:4D:77:69:90:3C"]
+      }
+    }]
