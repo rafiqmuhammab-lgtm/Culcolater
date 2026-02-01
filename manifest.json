@@ -1,10 +1,12 @@
 {
   "name": "Construction Master Calculator",
   "short_name": "ConstCalc",
-  "start_url": "./index.html",
+  "description": "اینٹیں، لنٹر، ماربل اور پلاٹ کا حساب لگانے کے لیے بہترین تعمیراتی کیلکولیٹر۔",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#2c3e50",
   "theme_color": "#2c3e50",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icon.png",
@@ -12,5 +14,7 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "ur"
 }
